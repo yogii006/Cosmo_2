@@ -1,0 +1,32 @@
+[
+  {
+    $lookup: {
+      from: "comments",
+      let: {
+        movieId: "$_id"
+      },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $eq: ["$movie_id", "$$movieId"]
+            }
+          }
+        }
+      ],
+      as: "comments"
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      title: 1,
+      comments: {
+        name: 1,
+        email: 1,
+        text: 1,
+        date: 1
+      }
+    }
+  }
+]
